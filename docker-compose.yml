@@ -1,0 +1,47 @@
+version: '3.4'
+
+services:
+  mariadb:
+    image: 'bitnami/mariadb:10.3'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=no
+      - MARIADB_PORT_NUMBER=${MARIADB_PORT_NUMBER}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+    ports:
+    - ${MARIADB_PORT_NUMBER}
+    volumes:
+      - './mariadb_data:/bitnami'
+    restart: always
+    
+  python-django:
+    build:       
+     context: ./django_data
+     args:
+      APP_NAME: ${DJANGO_APP_NAME}
+    command: bash -c '
+     django-admin startproject ${DJANGO_APP_NAME} || echo "Pass django-admin startproject ${DJANGO_APP_NAME} " &&
+     python /code/${DJANGO_APP_NAME}/manage.py migrate && 
+     gunicorn ${DJANGO_APP_NAME}.wsgi:application --chdir /code/${DJANGO_APP_NAME} -w 2 -b :${DJANGO_PORT} || echo " no " '
+    volumes:
+      - ./django_data/src:/code
+      - ./django_data/static:/static
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+    ports:
+      - ${DJANGO_OUTSIDE_PORT}:${DJANGO_PORT}
+    depends_on:
+      - mariadb
+
+volumes:
+  mariadb_data:
+    driver: local
+
+networks:
+  default:
+    external:
+      name: webproxy

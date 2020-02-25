@@ -1,0 +1,12 @@
+django == 2.1
+uwsgi==2.0.17
+gunicorn
+pymysql
+djangorestframework
+requests
+urllib3
+chardet
+certifi
+idna
+numpy
+six
