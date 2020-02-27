@@ -1,6 +1,7 @@
 django == 2.1
 uwsgi==2.0.17
 gunicorn
+ptvsd
 pymysql
 djangorestframework
 requests
