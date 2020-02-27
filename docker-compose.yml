@@ -24,7 +24,7 @@ services:
     command: bash -c '
      django-admin startproject ${DJANGO_APP_NAME} || echo "Pass django-admin startproject ${DJANGO_APP_NAME} " &&
      python /code/${DJANGO_APP_NAME}/manage.py migrate && 
-     gunicorn ${DJANGO_APP_NAME}.wsgi:application --chdir /code/${DJANGO_APP_NAME} -w 2 -b :${DJANGO_PORT} || echo " no " '
+     gunicorn ${DJANGO_APP_NAME}.wsgi:application --chdir /code/${DJANGO_APP_NAME} -w 2 -b :${DJANGO_PORT} '
     volumes:
       - ./django_data/src:/code
       - ./django_data/static:/static
@@ -34,6 +34,7 @@ services:
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
     ports:
       - ${DJANGO_OUTSIDE_PORT}:${DJANGO_PORT}
+      - ${DJANGO_DEBUG_PORT}:${DJANGO_DEBUG_PORT}
     depends_on:
       - mariadb
 
