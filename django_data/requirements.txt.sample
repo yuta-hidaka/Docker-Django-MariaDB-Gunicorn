@@ -1,9 +1,7 @@
 django == 2.1
-uwsgi==2.0.17
-gunicorn
-ptvsd
 pymysql
 djangorestframework
+django-bootstrap4
 requests
 urllib3
 chardet
@@ -11,3 +9,6 @@ certifi
 idna
 numpy
 six
+mysqlclient
+django-allauth
+Pillow
