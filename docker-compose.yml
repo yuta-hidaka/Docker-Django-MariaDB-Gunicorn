@@ -24,7 +24,7 @@ services:
     command: bash -c '
      django-admin startproject ${DJANGO_APP_NAME} || echo "Pass django-admin startproject ${DJANGO_APP_NAME} " &&
      python /code/${DJANGO_APP_NAME}/manage.py migrate && 
-     gunicorn ${DJANGO_APP_NAME}.wsgi:application --chdir /code/${DJANGO_APP_NAME} -w 2 -b :${DJANGO_PORT} '
+     gunicorn ${DJANGO_APP_NAME}.wsgi:application --chdir /code/${DJANGO_APP_NAME} -w 2 -b :${DJANGO_PORT} ${GUNICORN_CMD_ARGS} '
     volumes:
       - ./django_data/src:/code
       - ./django_data/static:/static
