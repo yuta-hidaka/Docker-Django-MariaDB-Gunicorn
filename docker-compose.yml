@@ -37,6 +37,7 @@ services:
       - ${DJANGO_DEBUG_PORT}:${DJANGO_DEBUG_PORT}
     depends_on:
       - mariadb
+    restart: always
 
 volumes:
   mariadb_data:
