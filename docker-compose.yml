@@ -1,33 +1,31 @@
 version: '3.4'
 
 services:
+        
   mariadb:
-    image: 'bitnami/mariadb:10.3'
+    image: 'mariadb:10.0.33'
     environment:
       - ALLOW_EMPTY_PASSWORD=no
-      - MARIADB_PORT_NUMBER=${MARIADB_PORT_NUMBER}
-      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
-      - MARIADB_USER=${MARIADB_USER}
-      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
-      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MYSQL_PORT_NUMBER=${MYSQL_PORT_NUMBER}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - TZ=${MYSQL_TIMEZONE}
     ports:
-    - ${MARIADB_PORT_NUMBER}
+    - ${MYSQL_PORT_NUMBER}
     volumes:
-      - './mariadb_data:/bitnami'
+      - './mariadb_data:/var/lib/mysql'
     restart: always
-    
+
   python-django:
     build:       
      context: ./django_data
      args:
       APP_NAME: ${DJANGO_APP_NAME}
     command: bash -c '
-     django-admin startproject ${DJANGO_APP_NAME} || echo "Pass django-admin startproject ${DJANGO_APP_NAME} " &&
-     python /code/${DJANGO_APP_NAME}/manage.py migrate && 
-     gunicorn ${DJANGO_APP_NAME}.wsgi:application --chdir /code/${DJANGO_APP_NAME} -w 2 -b :${DJANGO_PORT} ${GUNICORN_CMD_ARGS} '
-    volumes:
-      - ./django_data/src:/code
-      - ./django_data/static:/static
+     django-admin startproject ${DJANGO_APP_NAME} || echo "Pass django-admin startproject ${DJANGO_APP_NAME} " && echo "-----ok-----1" &&
+     gunicorn ${DJANGO_APP_NAME}.wsgi:application --chdir /code/${DJANGO_APP_NAME} -w 2 -b :${DJANGO_PORT} ${GUNICORN_CMD_ARGS}'
     environment:
       - VIRTUAL_HOST=${VIRTUAL_HOST}
       - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
@@ -37,6 +35,9 @@ services:
       - ${DJANGO_DEBUG_PORT}:${DJANGO_DEBUG_PORT}
     depends_on:
       - mariadb
+    volumes:
+      - ./django_data/src:/code
+      - ./django_data/static:/static
     restart: always
 
 volumes:
