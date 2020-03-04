@@ -18,7 +18,7 @@ cp django_data/requirements.txt.sample django_data/requirements.txt
 dcoker-compose up --build
 
 # move to django_data/src/<APP-NAME>/<APP-NAME>/settings.py and edit DB infomation and run below
-docker exec docker-django-maridb-gunicorn_python-django_1 python /code/<YOURE_APP_NAME>/manage.py migrate
+docker-compose exec python-django python sysnavi/manage.py showmigrations
 
 # access to localhost
 http://localhost
