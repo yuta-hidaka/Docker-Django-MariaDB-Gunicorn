@@ -13,6 +13,7 @@ services:
       - ${NGINX_OUTSIDE_PORT}:${NGINX_PORT}
     volumes:
       - ./django_data/src/${DJANGO_APP_NAME}/static:/static
+      - ./django_data/src/${DJANGO_APP_NAME}/media:/media
     depends_on:
       - python-django
     restart: always

@@ -4,6 +4,7 @@ ARG APP_PORT
 ARG LISTEN_PORT
 
 RUN mkdir /static
+RUN mkdir /media
 RUN rm /etc/nginx/conf.d/default.conf
 RUN touch /etc/nginx/conf.d/nginx.conf
 RUN echo " \
