@@ -1,7 +1,22 @@
 version: '3.4'
 
 services:
-        
+  nginx:
+    image: nginx:latest
+    build: 
+      context: ./nginx_data
+      args:
+        APP_NAME: ${DJANGO_APP_NAME}
+        APP_PORT: ${DJANGO_PORT}
+        LISTEN_PORT: ${NGINX_OUTSIDE_PORT}
+    ports:
+      - ${NGINX_OUTSIDE_PORT}:${NGINX_PORT}
+    volumes:
+      - ./django_data/src/${DJANGO_APP_NAME}/static:/static
+    depends_on:
+      - python-django
+    restart: always
+  
   mariadb:
     image: 'mariadb:10.0.33'
     environment:
@@ -12,8 +27,6 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - TZ=${MYSQL_TIMEZONE}
-    ports:
-    - ${MYSQL_PORT_NUMBER}
     volumes:
       - './mariadb_data:/var/lib/mysql'
     restart: always
@@ -21,8 +34,6 @@ services:
   python-django:
     build:       
      context: ./django_data
-     args:
-      APP_NAME: ${DJANGO_APP_NAME}
     command: bash -c '
      django-admin startproject ${DJANGO_APP_NAME} || echo "Pass django-admin startproject ${DJANGO_APP_NAME} " && echo "-----ok-----1" &&
      gunicorn ${DJANGO_APP_NAME}.wsgi:application --chdir /code/${DJANGO_APP_NAME} -w 2 -b :${DJANGO_PORT} ${GUNICORN_CMD_ARGS}'
@@ -37,7 +48,6 @@ services:
       - mariadb
     volumes:
       - ./django_data/src:/code
-      - ./django_data/static:/static
     restart: always
 
 volumes:
