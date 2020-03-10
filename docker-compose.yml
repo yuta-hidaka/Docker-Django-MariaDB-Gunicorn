@@ -20,6 +20,7 @@ services:
   
   mariadb:
     image: 'mariadb:10.0.33'
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
     environment:
       - ALLOW_EMPTY_PASSWORD=no
       - MYSQL_PORT_NUMBER=${MYSQL_PORT_NUMBER}
