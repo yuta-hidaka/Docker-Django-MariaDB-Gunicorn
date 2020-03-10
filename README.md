@@ -23,8 +23,20 @@ docker-compose exec python-django python <APP-NAME>/manage.py showmigrations
 # Collect static files
 docker-compose exec python-django python <APP-NAME>/manage.py collectstatic
 
+# Migrate
+docker-compose exec python-django python <APP-NAME>/manage.py migrate
+
+# If get an Error like "(1071, 'Specified key was too long; max key length is 767 bytes')" Please add this in settings.py
+# it is django-allauth issue
+# ref. https://code.djangoproject.com/ticket/18392
+
+ACCOUNT_EMAIL_MAX_LENGTH = 190
+
+
 # Access to localhost
 http://localhost
+
+
 
 
 ```
