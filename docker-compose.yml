@@ -3,12 +3,16 @@ version: '3.4'
 services:
   nginx:
     image: nginx:latest
-    build: 
+    build:
       context: ./nginx_data
       args:
         APP_NAME: ${DJANGO_APP_NAME}
         APP_PORT: ${DJANGO_PORT}
         LISTEN_PORT: ${NGINX_OUTSIDE_PORT}
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
     ports:
       - ${NGINX_OUTSIDE_PORT}:${NGINX_PORT}
     volumes:
@@ -17,9 +21,14 @@ services:
     depends_on:
       - python-django
     restart: always
-  
+
   mariadb:
     image: 'mariadb:10.0.33'
+    command:
+      [
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci',
+      ]
     environment:
       - ALLOW_EMPTY_PASSWORD=no
       - MYSQL_PORT_NUMBER=${MYSQL_PORT_NUMBER}
@@ -33,15 +42,11 @@ services:
     restart: always
 
   python-django:
-    build:       
-     context: ./django_data
+    build:
+      context: ./django_data
     command: bash -c '
-     django-admin startproject ${DJANGO_APP_NAME} || echo "Pass django-admin startproject ${DJANGO_APP_NAME} " && echo "-----ok-----1" &&
-     gunicorn ${DJANGO_APP_NAME}.wsgi:application --chdir /code/${DJANGO_APP_NAME} -w 2 -b :${DJANGO_PORT} ${GUNICORN_CMD_ARGS}'
-    environment:
-      - VIRTUAL_HOST=${VIRTUAL_HOST}
-      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
-      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+      django-admin startproject ${DJANGO_APP_NAME} || echo "Pass django-admin startproject ${DJANGO_APP_NAME} "  &&
+      gunicorn ${DJANGO_APP_NAME}.wsgi:application --chdir /code/${DJANGO_APP_NAME} -w 2 -b :${DJANGO_PORT} ${GUNICORN_CMD_ARGS}'
     ports:
       - ${DJANGO_OUTSIDE_PORT}:${DJANGO_PORT}
       - ${DJANGO_DEBUG_PORT}:${DJANGO_DEBUG_PORT}

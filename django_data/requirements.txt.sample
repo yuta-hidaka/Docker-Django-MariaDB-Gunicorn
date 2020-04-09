@@ -1,6 +1,9 @@
 django == 2.1
 pymysql
+gunicorn
+ptvsd
 djangorestframework
+django-cors-headers
 django-bootstrap4
 requests
 urllib3
@@ -10,5 +13,6 @@ idna
 numpy
 six
 mysqlclient
-django-allauth
 Pillow
+django-allauth
+django-rest-auth
