@@ -46,8 +46,12 @@ services:
       django-admin startproject ${DJANGO_APP_NAME} || echo "Pass django-admin startproject ${DJANGO_APP_NAME} "  &&
       gunicorn ${DJANGO_APP_NAME}.wsgi:application --chdir /code/${DJANGO_APP_NAME} -w 2 -b :${DJANGO_PORT} ${GUNICORN_CMD_ARGS}'
     ports:
+#     for develop
       - ${DJANGO_OUTSIDE_PORT}:${DJANGO_PORT}
       - ${DJANGO_DEBUG_PORT}:${DJANGO_DEBUG_PORT}
+#     for production
+#       - ${DJANGO_PORT}
+
     depends_on:
       - mariadb
     volumes:
