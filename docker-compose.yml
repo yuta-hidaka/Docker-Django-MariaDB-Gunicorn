@@ -18,8 +18,8 @@ services:
       # IF you use "https://github.com/evertramos/docker-compose-letsencrypt-nginx-proxy-companion please comment out and use below ports settings"
       # - ${NGINX_PORT}
     volumes:
-      - ./django_data/src/${DJANGO_APP_NAME}/static:/static
-      - ./django_data/src/${DJANGO_APP_NAME}/media:/media
+      - ./django_data/src/static:/static
+      - ./django_data/src/media:/media
     depends_on:
       - python-django
     restart: always
