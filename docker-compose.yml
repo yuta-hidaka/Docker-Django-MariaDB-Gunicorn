@@ -29,7 +29,6 @@ services:
     command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
     environment:
       - ALLOW_EMPTY_PASSWORD=no
-      - MYSQL_PORT_NUMBER=${MYSQL_PORT_NUMBER}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
