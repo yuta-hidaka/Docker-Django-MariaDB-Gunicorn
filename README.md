@@ -4,7 +4,7 @@ This docker-compose can make Django Project auntomatically with production env.
 Set a APP-Name in .eve and add your package in requirements.txt and just run!
 
 ```
-git clone https://github.com/yuta-hidaka/Docker-Django-MariDB-Gunicorn.git
+git clone https://github.com/yuta-hidaka/Docker-Django-MariDB-Gunicorn.git/
 ```
 
 #### Edit these files as you need
