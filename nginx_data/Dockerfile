@@ -3,7 +3,7 @@ ARG APP_NAME
 ARG APP_PORT
 ARG LISTEN_PORT
 
-RUN rm /etc/nginx/conf.d/default.conf
+RUN rm /etc/nginx/conf.d/default.conf || echo 'skip rm /etc/nginx/conf.d/default.conf'
 RUN touch /etc/nginx/conf.d/nginx.conf
 RUN echo "                                                              \
             upstream $APP_NAME {                                        \
