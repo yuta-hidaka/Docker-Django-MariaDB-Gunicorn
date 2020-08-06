@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   nginx:
-    image: nginx:latest
+    image: nginx:${DJANGO_APP_NAME}
     build:
       context: ./nginx_data
       args:
