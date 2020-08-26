@@ -1,3 +1,9 @@
+# Note!!
+## This is new version of docker-compose.yml that more faster and organized.
+## https://github.com/yuta-hidaka/Docker-Django-MariaDB-NginxUnit
+
+
+
 ### setup
 
 This docker-compose can make Django Project auntomatically with production env.
