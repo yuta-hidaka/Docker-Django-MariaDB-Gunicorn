@@ -1,6 +1,6 @@
-# Note!!
+## Note
 ## This is new version of docker-compose.yml that more faster and organized.
-## https://github.com/yuta-hidaka/Docker-Django-MariaDB-NginxUnit
+## THE NEW VERSION ➡️ https://github.com/yuta-hidaka/Docker-Django-MariaDB-NginxUnit
 
 
 
